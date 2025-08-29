@@ -1,0 +1,15 @@
+1. creo db
+2. installo pacchetti necessari
+3. composer install
+4. npm install
+5. copio .envexample e lo rinominop .env
+6. genero la key
+    php artisan key:generate
+7. modifico il file env con la connessione al database
+8. pulisco la cache 
+    php artisan config:clear
+9. controllo installazione
+    php artisan serve - npm run watch
+10. lancio le migration
+11. effettuo la registrazione al sito
+12. ok buon lavoro
