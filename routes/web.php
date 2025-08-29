@@ -27,5 +27,6 @@ Route::middleware('auth')
     ->prefix('admin')
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('homePage');
+        Route::resource('/movies', 'MovieController');
     });
 
