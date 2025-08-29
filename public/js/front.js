@@ -49544,7 +49544,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\UTENTE\Desktop\Pavel\developer\corso_boolean\2_Back_end\php\Framework\Laravel\laravel-auth\resources\js\front.js */"./resources/js/front.js");
+module.exports = __webpack_require__(/*! C:\Users\pavel\Desktop\dev\2_back-end\PHP\framework\Laravel\progetti\laravel-auth\resources\js\front.js */"./resources/js/front.js");
 
 
 /***/ })
