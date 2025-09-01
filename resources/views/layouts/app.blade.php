@@ -73,7 +73,9 @@
         </nav>
 
         <main class="py-4">
-            @include('admin.partials.navbar')
+            @auth
+                @include('admin.partials.navbar')  
+            @endauth
             @yield('content')
         </main>
     </div>
