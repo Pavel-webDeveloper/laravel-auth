@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Movie;
 
 class MovieController extends Controller
@@ -15,7 +16,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return view('admin.movies.index');
+        $listaMovie = Movie::all();
+        return view('admin.movies.index', compact('listaMovie'));
     }
 
     /**
@@ -36,7 +38,39 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $data = $request->all();
+        // @dump($data);
+
+        $newMovie = new Movie();
+        $newMovie->titolo = $data['titolo'];
+        $newMovie->regista = $data['regista'];
+
+        $newMovie->durata = sprintf('%02d:%02d:%02d', $data['ore'], $data['minuti'], $data['secondi']);
+
+        $newMovie->anno = $data['anno'];
+        $newMovie->nazione = $data['nazione'];
+
+        if( isset($data['pubblicato']) && $data['pubblicato'] == 'on'){
+            $newMovie->pubblicato = 1;
+        }else {
+            $newMovie->pubblicato = 0;
+        }
+
+        // GENERARE UNO SLUG UNICO NEL DATABASE
+        $baseSlug = Str::of($data['titolo'])->slug("-");
+        $setSlug = $baseSlug;
+        $contatore = 1;
+        while(Movie::where("slug", $setSlug)->exists()){
+            $setSlug = $baseSlug . "-" . $contatore;
+            $contatore++;
+        }
+        $newMovie->slug = $setSlug;
+        
+        $newMovie->save();
+
+        return redirect()->route('admin.movies.show', $newMovie->id);
+
     }
 
     /**
@@ -45,9 +79,9 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Movie $movie)
     {
-        return view('admin.movies.show');
+        return view('admin.movies.show', compact('movie'));
     }
 
     /**
@@ -56,9 +90,11 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Movie $movie)
     {
-        return view('admin.movies.edit');
+        [$ore, $minuti, $secondi] = explode(':', $movie->durata);
+
+        return view('admin.movies.edit', compact('movie', 'ore', 'minuti', 'secondi'));
     }
 
     /**

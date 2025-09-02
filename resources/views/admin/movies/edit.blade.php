@@ -3,22 +3,46 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <h1>edit</h1>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
+        <form action="{{route('admin.movies.store')}}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="titolo" class="form-label">titolo</label>
+                <input type="text" class="form-control" id="titolo" aria-describedby="titolo" name="titolo" value="{{$movie->titolo}}">
+            </div>
+            <div class="mb-3">
+                <label for="regista" class="form-label">regista</label>
+                <input type="text" class="form-control" id="regista" aria-describedby="regista" name="regista" value="{{$movie->regista}}">
+            </div>
+            <div class="mb-3">
+                <label for="durata" class="form-label">durata</label>
+                <div class="durata-container d-flex">
+                    <input type="number" name="ore" min="0" max="23" placeholder="Ore" class="form-control" style="width: 80px;" value="{{$ore}}">
+                    <input type="number" name="minuti" min="0" max="59" placeholder="Minuti" class="form-control" style="width: 80px;" value="{{$minuti}}">
+                    <input type="number" name="secondi" min="0" max="59" placeholder="Secondi" class="form-control" style="width: 80px;" value="{{$secondi}}">
                 </div>
             </div>
-        </div>
+            <div class="mb-3">
+                <label for="anno" class="form-label">anno</label>
+                {{-- <input type="number" name="anno" min="1900" max="{{ date('Y') }}" placeholder="Anno" class="form-control"> --}}
+                <select name="anno" class="form-select" name="anno">
+                    @for ($i = date('Y'); $i >= 1900; $i--)
+                    {{-- ?? null coalescing operator.  --}}
+                        <option value="{{ $i }}" {{ (old('anno', $movie->anno ?? '') == $i) ? 'selected' : '' }}>{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="nazione" class="form-label">nazione</label>
+                <input type="text" class="form-control" id="nazione" aria-describedby="nazione" name="nazione" value="{{$movie->nazione}}">
+            </div>
+            <div class="mb-3">
+                <input type="checkbox" class="form-check-input" id="pubblicato" name="pubblicato" {{old('pubblicato', $movie->pubblicato) ? 'checked' : '' }}>
+                <label for="pubblicato" class="form-label">pubblicato</label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Modifica</button>
+        </form>
+        
     </div>
 </div>
 @endsection
