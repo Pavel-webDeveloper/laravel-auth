@@ -36,6 +36,18 @@
                 <label for="nazione" class="form-label">nazione</label>
                 <input type="text" class="form-control" id="nazione" aria-describedby="nazione" name="nazione">
             </div>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">category</label>
+                <select name="category_id" id="category_id">
+                    <option value="">Nessuna</option>
+                    @foreach ($listaCategorie as $cat)
+                        <option value="{{$cat->id}}">{{$cat->name}}</option>
+                    @endforeach
+
+                </select>
+            </div>
+
             <div class="mb-3">
                 <input type="checkbox" class="form-check-input" id="pubblicato" name="pubblicato">
                 <label for="pubblicato" class="form-label">pubblicato</label>

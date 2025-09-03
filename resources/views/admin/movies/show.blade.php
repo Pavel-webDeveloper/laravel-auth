@@ -11,6 +11,11 @@
                     {{$key}}: {{$val}}
                 </li>
             @endforeach
+            @if ($movie->category)
+            <li>
+                categoria: {{$movie->category->name}}
+            </li>
+            @endif
         </ul>
     </div>
     <a href="{{route('admin.movies.edit', $movie->id)}}" class="btn btn-warning">Modifica</a>

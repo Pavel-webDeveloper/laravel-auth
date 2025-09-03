@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Movie;
+use App\Category;
 
 class MovieController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +29,8 @@ class MovieController extends Controller
      */
     public function create()
     {
-        return view('admin.movies.create');
+        $listaCategorie = Category::all();
+        return view('admin.movies.create', compact('listaCategorie'));
     }
 
     /**
@@ -38,9 +41,15 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->merge([
+            'ore' => (int) $request->input('ore'),
+            'minuti' => (int) $request->input('minuti'),
+            'secondi' => (int) $request->input('secondi'),
+        ]);
+        $request->validate($this->regoleValidazione());
+
         $data = $request->all();
-        // @dump($data);
+        // dd($data);
 
         $newMovie = new Movie();
         $newMovie->titolo = $data['titolo'];
@@ -50,6 +59,7 @@ class MovieController extends Controller
 
         $newMovie->anno = $data['anno'];
         $newMovie->nazione = $data['nazione'];
+        $newMovie->category_id = $data['category_id'];
 
         if( isset($data['pubblicato']) && $data['pubblicato'] == 'on'){
             $newMovie->pubblicato = 1;
@@ -93,8 +103,9 @@ class MovieController extends Controller
     public function edit(Movie $movie)
     {
         [$ore, $minuti, $secondi] = explode(':', $movie->durata);
+        $listaCategorie = Category::all();
 
-        return view('admin.movies.edit', compact('movie', 'ore', 'minuti', 'secondi'));
+        return view('admin.movies.edit', compact('movie', 'ore', 'minuti', 'secondi', 'listaCategorie'));
     }
 
     /**
@@ -104,9 +115,49 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Movie $movie)
     {
-        //
+        $request->merge([
+            'ore' => (int) $request->input('ore'),
+            'minuti' => (int) $request->input('minuti'),
+            'secondi' => (int) $request->input('secondi'),
+        ]);
+        $request->validate($this->regoleValidazione());
+
+        $data = $request->all();
+        // dd($data);
+
+        // TITOLO & SLUG
+        if($movie->titolo != $data['titolo']){
+            $movie->titolo = $data['titolo'];
+            // GENERARE UNO SLUG UNICO NEL DATABASE
+            $baseSlug = Str::of($movie->titolo)->slug("-");
+            $setSlug = $baseSlug;
+            $contatore = 1;
+            while(Movie::where("slug", $setSlug)->exists()){
+                $setSlug = $baseSlug . "-" . $contatore;
+                $contatore++;
+            }
+            $movie->slug = $setSlug;
+        }
+
+        // 
+        $movie->regista = $data['regista'];
+
+        $movie->durata = sprintf('%02d:%02d:%02d', $data['ore'], $data['minuti'], $data['secondi']);
+
+        $movie->anno = $data['anno'];
+        $movie->nazione = $data['nazione'];
+        $movie->category_id = $data['category_id'];
+
+        if( isset($data['pubblicato']) && $data['pubblicato'] == 'on'){
+            $movie->pubblicato = 1;
+        }else {
+            $movie->pubblicato = 0;
+        }
+
+        $movie->update();
+        return redirect()->route('admin.movies.show', $movie->id);
     }
 
     /**
@@ -119,4 +170,21 @@ class MovieController extends Controller
     {
         //
     }
+
+    protected function regoleValidazione()
+    {
+        return [
+            'titolo' => 'required|string|max:255',
+            'regista' => 'required|string|max:255',
+            'ore' => 'required|integer|min:0',
+            'minuti' => 'required|integer|min:0|max:59',
+            'secondi' => 'required|integer|min:0|max:59',
+            'anno' => 'required|integer|min:1888|max:' . date('Y'),
+            'nazione' => 'required|string|max:100',
+            'category_id' => 'nullable|exists:categories,id',
+            'pubblicato' => 'nullable|in:on',
+            'image' => 'nullable|string|max:255',
+        ];
+    }
+
 }
