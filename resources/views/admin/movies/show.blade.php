@@ -18,6 +18,13 @@
             @endif
         </ul>
     </div>
-    <a href="{{route('admin.movies.edit', $movie->id)}}" class="btn btn-warning">Modifica</a>
+    <div class="route-link d-flex" style="gap: 20px">
+        <a href="{{route('admin.movies.edit', $movie->id)}}" class="btn btn-warning">Modifica</a>
+        <form action="{{route('admin.movies.destroy', $movie->id)}}" method="Post">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Elimina</button>
+        </form>
+    </div>
 </div>
 @endsection

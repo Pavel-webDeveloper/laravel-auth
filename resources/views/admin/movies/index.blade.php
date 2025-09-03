@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="container">
+    @if (session('deleteMessage'))
+        <div class="alert alert-success">
+            {{ session('deleteMessage') }}
+        </div>
+    @endif
+
     <div class="row justify-content-center">
         <h1>Index</h1>
         <ol>
@@ -16,3 +22,4 @@
     </div>
 </div>
 @endsection
+

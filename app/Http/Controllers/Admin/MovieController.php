@@ -166,9 +166,10 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Movie $movie)
     {
-        //
+        $movie->delete();
+        return redirect()->route('admin.movies.index')->with("deleteMessage", "Il Film {$movie->titolo} è stato cancellato con successo!!!");
     }
 
     protected function regoleValidazione()
