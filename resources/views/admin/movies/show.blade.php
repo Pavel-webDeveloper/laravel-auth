@@ -40,11 +40,42 @@
 
     <div class="route-link d-flex" style="gap: 20px">
         <a href="{{route('admin.movies.edit', $movie->id)}}" class="btn btn-warning">Modifica</a>
-        <form action="{{route('admin.movies.destroy', $movie->id)}}" method="Post">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminaMovie">
+            Elimina
+        </button>
+        {{-- <form action="{{route('admin.movies.destroy', $movie->id)}}" method="Post">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Elimina</button>
-        </form>
+        </form> --}}
     </div>
+
+    
+
+    {{-- Modale Conferma Eliminazione --}}
+    <div class="modal fade" id="eliminaMovie" tabindex="-1" aria-labelledby="eliminaMovieLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminaMovieLabel">Titolo del film: {{$movie->titolo}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Sicuro di voler eliminare questo Film?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <form action="{{route('admin.movies.destroy', $movie->id)}}" method="Post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Elimina</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection
