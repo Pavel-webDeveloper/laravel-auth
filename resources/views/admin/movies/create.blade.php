@@ -49,6 +49,23 @@
             </div>
 
             <div class="mb-3">
+                <div class="form-group">
+                    <h5>Cast</h5>
+                    <div class="check-container d-flex" style="gap: 10px; flex-wrap: wrap;">
+                        @foreach ($listaAttori as $attore)
+                            <div class="check-item d-flex" style="width:calc(25% - 8px)">
+                                <input 
+                                    type="checkbox" id="{{$attore->slug}}" name="attoriFilm[]" style="margin-top:-7px!important; margin-right: 5px;"
+                                    {{in_array($attore->id, old("attoriFilm", [])) ? 'checked' : ''}} value="{{$attore->id}}"
+                                >
+                                <label for="{{$attore->slug}}" class="form-label">{{$attore->nome ." " . $attore->cognome}}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
                 <input type="checkbox" class="form-check-input" id="pubblicato" name="pubblicato">
                 <label for="pubblicato" class="form-label">pubblicato</label>
             </div>

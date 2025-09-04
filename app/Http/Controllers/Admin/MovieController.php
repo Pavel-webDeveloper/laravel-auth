@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Movie;
 use App\Category;
+use App\Actor;
 
 class MovieController extends Controller
 {
@@ -30,7 +31,8 @@ class MovieController extends Controller
     public function create()
     {
         $listaCategorie = Category::all();
-        return view('admin.movies.create', compact('listaCategorie'));
+        $listaAttori = Actor::all();
+        return view('admin.movies.create', compact('listaCategorie', 'listaAttori'));
     }
 
     /**
@@ -78,6 +80,11 @@ class MovieController extends Controller
         $newMovie->slug = $setSlug;
         
         $newMovie->save();
+
+        // POPOLARE LA TABELLA PIVOT DOPO IL SAVE
+        if(isset($data['attoriFilm'])){
+            $newMovie->actors()->sync($data['attoriFilm']);
+        }
 
         return redirect()->route('admin.movies.show', $newMovie->id);
 
