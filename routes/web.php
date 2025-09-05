@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 //     return view('guest.home');
 // });
 
+
 Auth::routes();
 
 // Raggruppo le rotte di admin
@@ -28,6 +29,8 @@ Route::middleware('auth')
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('homePage');
         Route::resource('/movies', 'MovieController');
+        Route::resource('/actors', 'ActorController');
+        Route::resource('/categories', 'CategoryController');
     });
 
 

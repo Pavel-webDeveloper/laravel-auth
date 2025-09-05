@@ -9,12 +9,12 @@
     @endif
 
     <div class="row justify-content-center">
-        <h1>Film</h1>
+        <h1>Attori</h1>
         <ol>
-            @foreach ($listaMovie as $movie)
+            @foreach ($listaAttori as $attore)
             <li>
-                <a href="{{route('admin.movies.show', $movie->id)}}">
-                    {{$movie->titolo}}
+                <a href="{{route('admin.actors.show', $attore->id)}}">
+                    {{$attore->nome}} {{$attore->cognome}}
                 </a>
             </li>
             @endforeach

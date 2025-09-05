@@ -18,7 +18,7 @@
         </ul>
     </div>
 
-    @if( count($movie->actors) > 0)
+    @if( count($movie->actors) > 1)
         <div class="cast-container container mb-5">
             <h3>Cast</h3>
             <div class="row">

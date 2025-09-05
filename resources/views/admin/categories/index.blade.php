@@ -9,7 +9,7 @@
     @endif
 
     <div class="row justify-content-center">
-        <h1>Film</h1>
+        <h1>Index</h1>
         <ol>
             @foreach ($listaMovie as $movie)
             <li>

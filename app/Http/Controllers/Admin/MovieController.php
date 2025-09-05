@@ -111,8 +111,9 @@ class MovieController extends Controller
     {
         [$ore, $minuti, $secondi] = explode(':', $movie->durata);
         $listaCategorie = Category::all();
+        $listaAttori = Actor::all();
 
-        return view('admin.movies.edit', compact('movie', 'ore', 'minuti', 'secondi', 'listaCategorie'));
+        return view('admin.movies.edit', compact('movie', 'ore', 'minuti', 'secondi', 'listaCategorie', 'listaAttori'));
     }
 
     /**
@@ -164,6 +165,11 @@ class MovieController extends Controller
         }
 
         $movie->update();
+
+        // POPOLARE LA TABELLA PIVOT DOPO IL SAVE
+        if(isset($data['attoriFilm'])){
+            $movie->actors()->sync($data['attoriFilm']);
+        }
         return redirect()->route('admin.movies.show', $movie->id);
     }
 

@@ -30,3 +30,18 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
 });
+
+
+// importare libreria datepicker
+import 'bootstrap-datepicker';
+
+
+$(function () {
+    $('#data_nascita').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true,
+        endDate: '0d',
+        language: 'it'
+    });
+});

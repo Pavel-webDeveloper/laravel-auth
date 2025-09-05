@@ -2,44 +2,41 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <h1>{{$movie->titolo}}</h1>
+        <h1 style="padding: 35px;">{{$actor->nome . " " . $actor->cognome}}</h1>
+
+        <div class="image-container mb-5" 
+        style="width: 554px; height: 554px; overflow-y:hidden; box-shadow: 4px 5px 25px 6px black; border-radius: 145px;" >
+            <img style="width: 100%;"
+            src="{{$actor->foto_url}}" alt="{{$actor->nome . " " . $actor->cognome}}">
+        </div>
         
         <ul>
-            @foreach ($movie->getAttributes() as $key => $val)
+            {{-- @foreach ($actor->getAttributes() as $val)
                 <li>
                     {{$key}}: {{$val}}
                 </li>
-            @endforeach
-            @if ($movie->category)
-            <li>
-                categoria: {{$movie->category->name}}
-            </li>
-            @endif
+            @endforeach --}}
+
+            {{-- info statiche --}}
+            <li>data di nascita: {{$actor->data_nascita}}</li>
+            <li>Nazionalità: {{$actor->nazionalità}}</li>
+            <li><p>Biografia:{{$actor->biografia}}</p></li>
         </ul>
     </div>
 
-    @if( count($movie->actors) > 0)
+    @if( count($actor->movies) > 0)
         <div class="cast-container container mb-5">
-            <h3>Cast</h3>
-            <div class="row">
-                @foreach ($movie->actors as $actor)
-                    <div class="col-3" style="margin-bottom: 20px;">
-                        <div class="card">
-                            <img src="{{$actor->foto_url}}" class="card-img-top" alt="..." style="height: 300px;">
-                            <div class="card-body">
-                                <h5 class="card-title">{{$actor->name . " " . $actor->cognome}}</h5>
-                                <p class="card-text">{{$actor->nazionalità}}</p>
-                                <a href="#" class="btn btn-primary">dettagli</a>
-                            </div>
-                        </div>
-                    </div>
+            <h3>Film interpretati</h3>
+            <ul>
+                @foreach ($actor->movies as $movie)
+                    <li>{{$movie->titolo}}</li>
                 @endforeach
-            </div>
+            </ul>
         </div> 
     @endif
 
     <div class="route-link d-flex" style="gap: 20px">
-        <a href="{{route('admin.movies.edit', $movie->id)}}" class="btn btn-warning">Modifica</a>
+        <a href="{{route('admin.actors.edit', $actor->id)}}" class="btn btn-warning">Modifica</a>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminaMovie">
             Elimina
         </button>
@@ -57,17 +54,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="eliminaMovieLabel">Titolo del film: {{$movie->titolo}}</h5>
+                    <h5 class="modal-title" id="eliminaMovieLabel">{{$actor->nome}}  {{$actor->cognome}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Sicuro di voler eliminare questo Film?
+                    Sicuro di voler eliminare questo attore dalla lista?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                    <form action="{{route('admin.movies.destroy', $movie->id)}}" method="Post">
+                    <form action="{{route('admin.actors.destroy', $actor->id)}}" method="Post">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Elimina</button>
