@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\Actor;
 
 class ActorController extends Controller
@@ -46,7 +47,11 @@ class ActorController extends Controller
         $newActor->data_nascita = $data['data_nascita'];
         $newActor->nazionalità = $data['nazionalità'];
         $newActor->biografia = $data['biografia'];
-        $newActor->foto_url = $data['foto_url'];
+        // $newActor->foto_url = $data['foto_url'];
+        if(isset($data['foto_url'])){
+            $path_image = Storage::put("uploads", $data['foto_url']);
+            $newActor->foto_url = $path_image;
+        }
 
         // GENERARE UNO SLUG UNICO NEL DATABASE
         $baseSlug = Str::of($data['nome']. " " . $data['cognome'])->slug("-");
@@ -111,10 +116,17 @@ class ActorController extends Controller
             $actor->slug = $setSlug;
         }
 
+        if(isset($data['foto_url'])){
+            Storage::delete($actor->foto_url);
+            $path_image = Storage::put("uploads", $data['foto_url']);
+            $actor->foto_url = $path_image;
+        }
+
+
         $actor->data_nascita = $data['data_nascita'];
         $actor->nazionalità = $data['nazionalità'];
         $actor->biografia = $data['biografia'];
-        $actor->foto_url = $data['foto_url'];
+        // $actor->foto_url = $data['foto_url'];
 
         $actor->update();
         return redirect()->route('admin.actors.show', $actor->id);

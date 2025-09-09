@@ -29,7 +29,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{$actor->name . " " . $actor->cognome}}</h5>
                                 <p class="card-text">{{$actor->nazionalità}}</p>
-                                <a href="#" class="btn btn-primary">dettagli</a>
+                                <a href="{{route('admin.actors.show', $actor->id)}}" class="btn btn-primary">dettagli</a>
                             </div>
                         </div>
                     </div>

@@ -15,7 +15,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <form action="{{route('admin.movies.update', $movie->id)}}" method="POST">
+        <form action="{{route('admin.movies.update', $movie->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -111,7 +111,9 @@
             
             <button type="submit" class="btn btn-primary">Modifica</button>
         </form>
-        
     </div>
 </div>
+
+<script src="//js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas);</script>
 @endsection

@@ -55,9 +55,16 @@
             @enderror
 
 
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="foto_url" class="form-label">foto_url</label>
                 <input type="text" class="form-control @error('foto_url') is-invalid @enderror" id="foto_url" aria-describedby="foto_url" name="foto_url" value="{{$actor->foto_url}}">
+            </div> --}}
+            <div class="mb-3 d-flex">
+                <img id="uploadPreview" src="https://place-hold.it/300" alt="immagine-placeholder" width="100" style="margin-right: 20px;">
+                <div>
+                    <label for="foto_url" class="form-label">foto_url</label>
+                    <input type="file" class="form-control" id="foto_url" aria-describedby="foto_url" name="foto_url" onchange="myAppJs.previewImage()">
+                </div>
             </div>
             @error('foto_url')
               <div class="alert alert-danger">{{$message}}</div>  

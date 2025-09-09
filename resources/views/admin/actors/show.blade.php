@@ -6,8 +6,18 @@
 
         <div class="image-container mb-5" 
         style="width: 554px; height: 554px; overflow-y:hidden; box-shadow: 4px 5px 25px 6px black; border-radius: 145px;" >
-            <img style="width: 100%;"
-            src="{{$actor->foto_url}}" alt="{{$actor->nome . " " . $actor->cognome}}">
+            @if(Str::startsWith($actor->foto_url, 'https'))
+                <img src="{{ $actor->foto_url }}" alt="Immagine esterna" style="width: 100%;">
+            @elseif(Str::startsWith($actor->foto_url, 'uploads'))
+                <img src="{{ asset('storage/' . $actor->foto_url) }}" alt="Immagine locale" style="width: 100%;">
+            @else
+                <img src="https://place-hold.it/100x100?text=No+Image" alt="Nessuna immagine" style="width: 100%;">
+            @endif
+
+            {{-- <img style="width: 100%;"
+            src="{{$actor->foto_url}}" alt="{{$actor->nome . " " . $actor->cognome}}"> --}}
+            {{-- <img style="width: 100%;"
+            src="{{asset("storage/{$actor->foto_url}")}}" alt="{{$actor->nome . " " . $actor->cognome}}"> --}}
         </div>
         
         <ul>
@@ -29,7 +39,9 @@
             <h3>Film interpretati</h3>
             <ul>
                 @foreach ($actor->movies as $movie)
-                    <li>{{$movie->titolo}}</li>
+                    <li>
+                        <a href="{{route('admin.movies.show', $movie->id)}}">{{$movie->titolo}}</a>
+                    </li>
                 @endforeach
             </ul>
         </div> 
